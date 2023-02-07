@@ -11,7 +11,8 @@
 
 - 리액트에서도 SSR을 지원하지만 구현하기에 굉장히 복잡하기 때문에 Next.js를 통해서 이 문제를 해결해주게 됩니다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8a4fdedf-112f-40ad-87b3-8633258a171b/Untitled.png)
+<p align="center">
+<img width="600" alt="[CSR]" src="https://user-images.githubusercontent.com/89959952/217270187-d976a303-4afc-4f5a-9feb-4758b0904ad0.png">
 
 ### ✔️ Server Side Rendering
 
@@ -25,7 +26,8 @@
 
 - Next.js에서는 서버 사이드 렌더링을 이용하므로 **사용자와 검색 엔진 크롤러에게 바로 렌더링 된 페이지를 전달 할 수 있어서 검색엔진 최적화에 좋은 영향을 줍니다.**
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/10498dae-9b26-4188-8a8c-5281faef2d02/Untitled.png)
+<p align="center">
+<img width="600" alt="[SSR]" src="https://user-images.githubusercontent.com/89959952/217270414-5c6da43c-41d1-4537-80c7-006f9eb95830.png">
 
 - 설치 방법
 
