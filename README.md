@@ -51,6 +51,12 @@ yarn create next-app --typescript
 
 ### ✔️ NextJS 기본 파일 구조
 
+<p align="center">
+<img width="600" alt="[directory]" src="https://user-images.githubusercontent.com/89959952/217271051-a1aeb352-0af1-4888-90d7-f9e736f2aa76.png"> 
+
+
+ 
+ 
 ### ⚙️ pages
 
 - 이 폴더 안에 페이지들을 생성 합니다.
@@ -111,21 +117,25 @@ yarn create next-app --typescript
 
 - 그래서 외부 요청에 의해서 변동이 없는 페이지들은 먼저 만들어 놓고 그것을 재사용하면 좋습니다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0953c429-243c-4793-af1b-fbeffa1f848f/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/33e483a0-9ae7-4d22-bcdf-a560184226cb/Untitled.png)
-
+<p align="center">
+<img width="600" alt="[SSG]" src="https://user-images.githubusercontent.com/89959952/217272074-0240ecfb-ac7c-4820-8b98-7fe10d24c1c7.png"> 
+  
+<p align="center">
+<img width="600" alt="[SSR]" src="https://user-images.githubusercontent.com/89959952/217272115-4b4a7a0a-2ecf-4301-91db-65069575b5c6.png"> 
+  
 ---
 
 ⚙️ **getStaticProps**
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1db72b81-8a87-4076-b083-d35904c419d8/Untitled.png)
+<p align="center">
+<img width="600" alt="[getStaticProps]" src="https://user-images.githubusercontent.com/89959952/217272685-c3d39078-ff37-4708-ba96-2c218672f2a7.png"> 
 
 - getStaticProps 함수를 async로 export 하면, getStaticProps에서 리턴되는 props를 가지고 페이지를 pre-render 합니다. build time에 페이지를 렌더링 합니다.
 
 - useEffect로 데이터를 가져왔을 때 보다 훨씬 빠르게 가져오게 됩니다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/308a5c14-ff5e-4954-83b9-542a378293c2/Untitled.png)
+<p align="center">
+<img width="600" alt="[getStaticProps]" src="https://user-images.githubusercontent.com/89959952/217273106-4cfe5c1c-d287-4657-ba05-080f8e0f8cb4.png"> 
 
 💡 **_getStaticProps를 사용해야 할 때_**
 
@@ -147,15 +157,17 @@ yarn create next-app --typescript
 
 - Nextjs는 pre-render에서 정적으로 getStaticPaths 에서 호출하는 경로들을 가져옵니다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/601c0147-dcdd-407f-8d27-a5806a132ef9/Untitled.png)
-
+<p align="center">
+<img width="600" alt="[getStaticPaths]" src="https://user-images.githubusercontent.com/89959952/217273341-956706f7-6596-4220-87a6-e2b1b31104a0.png"> 
+ 
 ### **_paths_**
 
 - 어떠한 경로가 pre-render 될지를 결정합니다.
 
 - 만약 pages/posts/[id].js 이라는 이름의 동적 라우팅을 사용하는 페이지가 있다면 아래와 같이 됩니다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a0fa6e83-d89f-41fe-8650-1536f8fa2586/Untitled.png)
+<p align="center">
+<img width="600" alt="[paths]" src="https://user-images.githubusercontent.com/89959952/217273703-dc88b2a0-38f8-4946-905f-95afe93cd4bf.png"> 
 
 1. 빌드하는 동안 /posts/1과 /posts/2를 생성하게 됩니다.
 
@@ -167,7 +179,8 @@ yarn create next-app --typescript
 
 - 만약 페이지 이름이 pages/[...slug] 와 같이 모든 경로를 사용한다면, params는 slug가 담긴 배열이어야한다. ['postId', 'commentId']
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/519c7e4f-7c42-4849-b1ba-5900a08b0564/Untitled.png)
+<p align="center">
+<img width="600" alt="[params]" src="https://user-images.githubusercontent.com/89959952/217273979-9ee3f73f-2a98-4e0d-a220-21d9fcd9bca8.png"> 
 
 ### **\***fallback**\***
 
@@ -187,19 +200,23 @@ yarn create next-app --typescript
 
 - 그 다음부터는 해당 페이지로 접속하는 사용자에게는 static 한 페이지를 보여줍니다.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ef19d639-bf71-44b0-97ba-53771b095d4f/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4d0b5d7e-84a5-4463-ab65-053be111c173/Untitled.png)
-
+<p align="center">
+<img width="600" alt="[fallback]" src="https://user-images.githubusercontent.com/89959952/217274572-87567012-6834-4729-a6d0-fc15199888ff.png"> 
+ 
+<p align="center">
+<img width="600" alt="[fallback]" src="https://user-images.githubusercontent.com/89959952/217274596-e6a4d1d0-c385-48b3-a9ec-76ff72133856.png"> 
+ 
 ---
 
 ⚙️ **getServerSideProps**
 
 - getServerSideProps 함수를 async로 export 하면, Next는 각 요청마다 리턴되는 데이터를 getServerSideProps로 pre-render합니다.
+ 
+<p align="center">
+<img width="600" alt="[getServerSideProps]" src="https://user-images.githubusercontent.com/89959952/217274998-88a06d7d-6b13-4d15-a7f6-8b8097bf7793.png">
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f0c1adc1-e831-4f5d-a51b-cd1a18262cb6/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/39f03c9b-6bfe-4f85-bc49-6b6ee1478cde/Untitled.png)
+<p align="center">
+<img width="600" alt="[getServerSideProps]" src="https://user-images.githubusercontent.com/89959952/217275011-91642719-edb0-4f90-a9a8-dd488df582ee.png">
 
 💡 **_getServerSideProps를 사용해야 할 때_**
 
