@@ -26,7 +26,7 @@ export function getSortedPostsData() {
 
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents);
-    console.log("matterResult", matterResult);
+    // console.log("matterResult", matterResult);
     // Combine the data with the id
     return {
       id,
@@ -47,6 +47,7 @@ export function getSortedPostsData() {
 
 export function getAllPostIds() {
   const fileNames = fs.readdirSync(postsDirectory);
+  // filecleNames [ 'pre-rendering.md', 'ssg-ssr.md' ]
 
   return fileNames.map((fileName) => {
     return {
