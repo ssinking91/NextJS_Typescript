@@ -266,3 +266,352 @@ yarn create next-app --typescript
   pages/[username]/settings.js → /:username/settings (/foo/settings)
   pages/post/[...all].js → /post/* (/post/2020/id/title)
   ```
+
+<br/>
+
+---
+
+<br/>
+
+<br/>
+
+---
+
+<br/>
+
+# 💡 NextJS13_Typescript
+
+### ✔️ NextJS 13 버전
+
+<br/>
+
+⚙️ **next app 설치**
+
+```typescript
+//
+npx create-next-app@latest --ts ./
+```
+
+<br/>
+
+⚙️ **백엔드 서비스를 위한 포켓베이스 이용하기**
+
+- <https://pocketbase.io/docs/>
+
+1. 다운로드
+
+2. 사용법
+
+3. Admin Login
+
+4. Data 생성
+
+<br/>
+
+---
+
+<br/>
+
+### ✔️ NextJS 13 File System Routing
+
+<br/>
+
+⚙️ **app/ Directory (beta)**
+
+- pages 디렉터리 내의 nesting routing 구조는 전과 동일하게 유지되므로 12버전 그대로 사용해도 무방
+
+- 폴더 구조로 라우팅을, 파일로 UI를 정의할 수 있다. (layout.js, page.js 아래에서 자세히 설명!
+
+- app 디렉토리 안에 다른 프로젝트 파일(UI 컴포넌트, test, stories 등)을 같이 위치시킬 수 있다. (pageExtensions config 참고)
+
+- 기존 pages와 가장 다른점은, app 내의 파일들은 서버에서 React Server Component 구성요소로 렌더링된다
+
+```typescript
+// Error: > the `app` dir is experimental. Please add `{experimental: { appDir: true }}` to your `next.config.js` to enable it
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  experimental: { appDir: true },
+};
+
+module.exports = nextConfig;
+```
+
+⚙️ **예약된 파일 이름들(Special Files)**
+
+- app 디렉터리 내에 다양한 파일들이 추가 되었다.
+
+- ⭐ **page.tsx** : A file used to define the unique UI of a route. Pages represent the leaf of the route and are needed for the path to be accessible.
+
+- ⭐ **layout.tsx** : A file used to define UI that is shared across multiple pages. A layout accepts another layout or a page as its child. You can nest layouts to create nested routes.
+
+- ⭐ **loading.tsx** : An optional file used to create loading UI for a specific part of an app. It automatically wraps a page or child layout in a React Suspense Boundary, showing your loading component immediately on the first load and when navigating between sibling routes.
+
+- ⭐ **error.tsx** : An optional file used to isolate errors to specific parts of an app, show specific error information, and functionality to attempt to recover from the error. It automatically wraps a page or child layout in a React Error Boundary. Showing your error component whenever an error in a subtree is caught.
+
+- ⭐ **template.tsx** : An optional file, similar to layouts, but on navigation, a new instance of the component is mounted and the state is not shared. You can use templates for cases where you require their behavior, such as enter/exit animations.
+
+- ⭐ **head.tsx** : An optional file used to define the contents of the <head> tag for a given route.
+
+<br/>
+
+---
+
+<br/>
+
+### ✔️ Server Component
+
+<br/>
+
+⚙️ **Server Component**
+
+- React 18 이전에는 React를 사용하여 애플리케이션을 렌더링하는 기본 방법은 전적으로 클라이언트에서였습니다. => React 18 이후 서버 컴포넌트 사용 가능
+
+- Next.js는 HTML을 생성하고 React에 의해 rehydrate 되도록 클라이언트에 전송함으로써 애플리케이션을 페이지로 나누고 서버에서 미리 렌더링하는 더 쉬운 방법을 제공했습니다. 그러나 이로 인해 초기 HTML을 대화식(interactive)으로 만들기 위해 클라이언트에 추가 JavaScript가 필요했습니다.
+  => 서버에서 미리 렌더링하기 위해 사용했던 SSR도 문제가 있었습니다.
+
+- 이제 서버 및 클라이언트 Component 를 사용하여 React는 클라이언트와 서버에서 렌더링할 수 있으므로 구성 요소 수준에서 렌더링 환경을 선택할 수 있습니다. 기본적으로 App 디렉터리는 서버 구성 요소를 사용하므로 서버에서 구성 요소를 쉽게 렌더링하고 클라이언트에 전송되는 JavaScript의 양을 줄일 수 있습니다. 그러나 App 내에서 클라이언트 구성 요소를 사용하고 클라이언트에서 렌더링할 수 있는 옵션이 있습니다.
+  => Server Component, Client Component 같이 사용 가능
+
+<br/>
+
+- <https://reactjs.org/blog/2020/12/21/data-fetching-with-react-server-components.html>
+- <https://beta.nextjs.org/docs/rendering/server-and-client-components#server-components>
+
+<br/>
+
+---
+
+<br/>
+
+### ✔️ Data-fetching
+
+<br/>
+
+⚙️ **Data-fetching & error-handling**
+
+```typescript
+// app/posts/page.tsx
+
+async function getPosts() {
+  const res = await fetch(
+    "http://127.0.0.1:8090/api/collections/posts/records",
+    { cache: "no-store" }
+  );
+
+  // Recommendation: handle errors
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  const data = await res.json();
+  return data?.items as postItem[];
+}
+```
+
+- <https://beta.nextjs.org/docs/data-fetching/fetching>
+
+<br/>
+
+⚙️ **Static Data Fetching**
+
+- 기본적으로 fetch 는 자동으로 데이터를 가져오고 캐시합니다.
+
+```typescript
+fetch("https://..."); // cache: 'force-cache' is the default
+```
+
+- <https://beta.nextjs.org/docs/data-fetching/fetching#static-data-fetching>
+
+<br/>
+
+⚙️ **Refresh on every request**
+
+- 캐시가 안되게 하고 모든 리퀘스트마다 다시 가져올 수 있게 해 줍니다.
+
+```typescript
+async function getPosts() {
+  const res = await fetch(
+    "http://127.0.0.1:8090/api/collections/posts/records",
+    // getServerSideProps와 유사
+    { cache: "no-store" }
+  );
+
+  // Recommendation: handle errors
+  if (!res.ok) {
+    // This will activate the closest `error.js` Error Boundary
+    throw new Error("Failed to fetch data");
+  }
+
+  const data = await res.json();
+  return data?.items as postItem[];
+}
+```
+
+- <https://beta.nextjs.org/docs/data-fetching/fetching#dynamic-data-fetching>
+
+<br/>
+
+⚙️ **Revalidating Data**
+
+- 캐시된 데이터를 일정 시간 간격으로 재검증하려면 fetch()에서 next.revalidate 옵션을 사용할 수 있습니다. 기본 단위는 초입니다.
+
+```typescript
+// app/posts/[id]/page.tsx
+
+async function getPost(postId: String) {
+  const res = await fetch(
+    `http://127.0.0.1:8090/api/collections/posts/records/${postId}`,
+    { next: { revalidate: 10 } }
+  );
+  if (!res.ok) throw new Error("Failed to fetch data");
+
+  const data = await res.json();
+  return data;
+}
+```
+
+- <https://beta.nextjs.org/docs/data-fetching/revalidating#background-revalidation>
+
+<br/>
+
+⚙️ **generateStaticParams**
+
+- generateStaticParams 함수는 해당 레이아웃 또는 페이지가 생성되기 전에 빌드 시간에 실행됩니다. Revalidation(ISR) 중에는 다시 호출되지 않습니다.
+
+```typescript
+export async function generateStaticParams() {
+  const posts = await getPosts();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+```
+
+- <https://beta.nextjs.org/docs/api-reference/generate-static-params>
+
+<br/>
+
+---
+
+<br/>
+
+### ✔️ 데이터 생성 컴포넌트 생성
+
+<br/>
+
+⚙️ **데이터 생성 컴포넌트 생성**
+
+- Client Component 를 사용하려면 앱 내부에 파일을 만들고 파일 상단에 "use client" 지시문을 추가합니다(임포트하기 전에).
+
+```typescript
+// app/posts/CreatePost.tsx
+
+// client component
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+const CreatePost = () => {
+  const router = useRouter();
+
+  const [title, setTitle] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await fetch("http://127.0.0.1:8090/api/collections/posts/records", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+      }),
+    });
+    setTitle("");
+
+    router.refresh();
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <button type="submit">CreatePost</button>
+    </form>
+  );
+};
+
+export default CreatePost;
+```
+
+- useState 또는 useEffect와 같은 클라이언트 후크를 사용하는 경우 구성 요소를 '클라이언트 사용'으로 표시하기만 하면 됩니다. 다른 클라이언트 구성 요소에서 가져오지 않을 때 자동으로 서버 구성 요소로 렌더링될 수 있도록 클라이언트 후크에 의존하지 않는 구성 요소를 지시문 없이 그대로 두는 것이 가장 좋습니다. 이를 통해 클라이언트측 JavaScript를 최소한으로 줄일 수 있습니다.
+
+- <https://beta.nextjs.org/docs/rendering/server-and-client-components#client-components>
+
+<br/>
+
+---
+
+<br/>
+
+### ✔️ refresh()
+
+<br/>
+
+⚙️ **refresh()**
+
+```typescript
+// app/posts/CreatePost.tsx
+
+// client component
+"use client";
+
+import { useRouter } from "next/navigation"; // "next/navigation" import로 해줘야 함
+import { useState } from "react";
+
+const CreatePost = () => {
+  const router = useRouter();
+
+  const [title, setTitle] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await fetch("http://127.0.0.1:8090/api/collections/posts/records", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title,
+      }),
+    });
+    setTitle("");
+
+    // Refresh the current route and fetch new data from the server without
+    // losing client-side browser or React state.
+    router.refresh();
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        placeholder="Title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <button type="submit">CreatePost</button>
+    </form>
+  );
+};
+
+export default CreatePost;
+```
+
+- refresh()를 호출하면 현재 경로가 서버에서 업데이트된 할일 목록을 새로고침하고 가져옵니다. 이는 브라우저 기록에 영향을 미치지 않지만 루트 레이아웃에서 아래로 데이터를 새로 고칩니다. refresh()를 사용할 때 React 및 브라우저 상태를 모두 포함하여 클라이언트 측 상태가 손실되지 않습니다.
+  ==> full page refresh를 안해도 됩니다.
+
+- <https://beta.nextjs.org/docs/data-fetching/mutating>
